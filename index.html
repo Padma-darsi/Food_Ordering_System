@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Restaurant Order System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 25px;
+      background-color: #343a40;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-bar {
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      width: 180px;
+    }
+
+    .nav-btn {
+      padding: 5px 12px;
+      border: none;
+      background-color: #ffc107;
+      color: black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    aside {
+      width: 250px;
+      background: #111;
+      color: white;
+      padding: 30px;
+      position: fixed;
+      height: 100%;
+      top: 55px; /* height of navbar */
+      overflow-y: auto;
+    }
+
+    main {
+      margin-left: 250px;
+      margin-top: 10px; /* height of navbar */
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #1e1e1e;
+      color: white;
+    }
+
+    .banner {
+      width: 100%;
+      height: 40vh;
+      margin-bottom: 30px;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      background: #2c2c2c;
+      border-radius: 10px;
+      padding: 10px;
+      width: calc(25% - 20px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .card button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+
+    ul li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <h2>Restaurant</h2>
+    <div class="nav-right">
+      <input type="text" placeholder="Search..." class="search-bar" />
+      <button class="nav-btn">Sign Up</button>
+      <button class="nav-btn">Login</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside>
+      <h2>Your Restaurant Menu</h2>
+      <p>Your Slogan</p>
+      <h3>Quick Links</h3>
+      <ul>
+        <li>Home</li>
+        <li>Your Orders</li>
+        <li>Wallet</li>
+        <li>Profile</li>
+        <li>Logout</li>
+      </ul>
+      <h3>More About Us</h3>
+      <ul>
+        <li>Our blog</li>
+        <li>Upcoming Dishes</li>
+        <li>Our Story</li>
+        <li>Social Media Links</li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="banner">
+        <img src="image1" alt="Banner Image" />
+      </div>
+      <div class="menu" id="menu"></div>
+    </main>
+  </div>
+
+  <script>
+    const menuData = [
+      { name: 'Burger', price: '$5.99', img: 'burger.jpg' },
+      { name: 'Pizza', price: '$7.99', img: 'pizza.webp' },
+      { name: 'Fries', price: '$2.99', img: 'fries.jpg' },
+      { name: 'Wrap', price: '$4.99', img: 'wrap.jpg' },
+      { name: 'Hot Dog', price: '$3.99', img: 'hot_dog.jpg' },
+      { name: 'Sandwich', price: '$4.49', img: 'Sandwich.jpg' },
+      { name: 'Salad', price: '$6.49', img: 'Salad.jpg' },
+      { name: 'Taco', price: '$3.49', img: 'Taco.webp' },
+    ];
+
+    function getMenu() {
+      const menu = document.getElementById('menu');
+      menu.innerHTML = '';
+      menuData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" />
+          <h4>${item.name}</h4>
+          <p>${item.price}</p>
+          <button>Add to Order</button>
+        `;
+        menu.appendChild(card);
+      });
+    }
+
+    function takeOrder() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const orderItems = [];
+          for (let i = 0; i < 3; i++) {
+            const randomItem = menuData[Math.floor(Math.random() * menuData.length)];
+            orderItems.push(randomItem);
+          }
+          console.log('Order taken:', orderItems);
+          resolve(orderItems);
+        }, 2500);
+      });
+    }
+
+    function orderPrep() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const prep = { order_status: true, paid: false };
+          console.log('Order prepared:', prep);
+          resolve(prep);
+        }, 1500);
+      });
+    }
+
+    function payOrder() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const paid = { order_status: true, paid: true };
+          console.log('Order paid:', paid);
+          resolve(paid);
+        }, 1000);
+      });
+    }
+
+    function thankyouFnc() {
+      alert('Thank you for your order!');
+    }
+
+    function handleOrderFlow() {
+      takeOrder()
+        .then(orderPrep)
+        .then(payOrder)
+        .then(payment => {
+          if (payment.paid) thankyouFnc();
+        })
+        .catch(err => console.error('Order process failed:', err));
+    }
+
+    getMenu();
+    handleOrderFlow();
+  </script>
+
+</body>
+</html>
